@@ -1,6 +1,8 @@
 {
   "pages":[
     "pages/index/index",
+    "pages/course/index",
+    "pages/my/index",
     "pages/logs/logs"
   ],
   "window":{
@@ -23,13 +25,13 @@
       },
       {
         "text": "课程",
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/course/index",
         "iconPath": "images/nav/cart-off.png",
         "selectedIconPath": "images/nav/cart-on.png"
       },
       {
         "text": "我的",
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/my/index",
         "iconPath": "images/nav/my-off.png",
         "selectedIconPath": "images/nav/my-on.png"
       }
