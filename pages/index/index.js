@@ -1,48 +1,127 @@
 //index.js
-//获取应用实例
+// 获取应用实例
+var Api = require('../../utils/api.js');
+
 const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello Home!',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    postsList: [],
+    postsShowSwiperList: [],
+    isLastPage: false,
+    page: 1,
+    search: '',
+    categories: 0,
+    showerror: 'none',
+    showCategoryName: '',
+    categoryName: '',
+    showallDisplay: 'block',
+    displayHeader: 'none',
+    displaySwiper: 'none',
+    floatDisplay: 'none',
+    displayfirstSwiper: 'none',
+    topNav: []
   },
-  //事件处理函数
+
+  onLoad: function (options) {
+    this.fetchTopFivePosts();
+
+  },
+
+  onShow: function (options) {
+  },
+
+  // 分享
+  onShareAppMessage: function () {
+  },
+
+  // 下拉刷新
+  onPullDownRefresh: function () {
+  },
+
+  // 搜索
+  formSubmit: function(e) {
+  },
+
+  // 到底部
+  onReachBottom: function() {
+  },
+
+  // 事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
+
+  fetchTopFivePosts: function() {
+    var request = wxRequest.getRequest(Api.getSwiperPosts());
+    request.then(response => {
+      if (response.data.status == '200' && response.data.posts.length > 0) {
         this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
+          postsShowSwiperList: response.data.posts,
+          postsShowSwiperList: self.data.postShowSwiperList.concat(
+            response.data.posts.map(function(item) {
+              if (item.post_medium_image_300 == null
+                || item.post_medium_image_300 == '') {
+                if (item.content_first_image != null
+                  && item.content_first_image != '') {
+                  item.post_medium_image_300 = item.content_first_image;
+                } else {
+                  item.post_medium_image_300 = '../../images/logo700.png';
+                }
+              }
+
+              return item;
+            })),
+            showallDisplay: 'block',
+            displaySwiper: 'block',
+        });
+      } else {
+        this.setData({
+          displaySwiper: 'none',
+          displayHeader: 'block',
+          showallDisplay: 'block',
+        });
       }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
+    }).then(response => {
+      this.fetchPostsData(this.data)
+    }).catch(response => {
+      console.log(response);
+      this.setData({
+        showerror: 'block',
+        floatDisplay: 'none',
+      });
+    }).finally(() => {
+      console.log("OK!");
+    });
   },
+
+  // 获取文章列表数据
+  fetchPostsData: function(data) {
+  },
+
+  // 加载更多
+  loadMore: function(e) {
+
+  },
+
+  // 跳转至查看详情页
+  redirectToDetail: function(e) {
+
+  },
+
+  // 首页图标跳转
+  onNavRedirect: function(e) {
+
+  },
+
+  // 跳转至app详情
+  redirectToAppDetail: function(e) {
+
+  },
+
+  // 返回首页
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo

@@ -1,13 +1,39 @@
 <!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+
+<import src="../../templates/common-list.wxml"/>
+
+<!--轮播图-->
+<view class="index-header" style="display:{{displaySwiper}}">
+  <swiper class="index-swiper" indicator-dots='true' interval='10000' autoplay='true' indicator-color='rgba(255, 255, 255, .2)' indicator-active-color='rgba(255, 255, 255, .7)'>
+    <block>
+      <swiper-item>
+        <image></image>
+        <view></view>
+        <view>
+          <text></text>
+        </view>
+      </swiper-item>
     </block>
+  </swiper>
+</view>
+
+<!--网络错误提示-->
+<view>
+</view>
+
+<!--主页显示内容-->
+<view>
+  <view>
+    <!--搜索-->
+    <form>
+    </form>
+
+    <!--图标导航-->
+    <view>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+
+  <!--图文列表-->
+  <view>
   </view>
 </view>

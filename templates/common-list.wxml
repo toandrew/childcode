@@ -1,0 +1,22 @@
+<template name="tempCommonList">
+  <view class="common-list">
+    <block wx:key="id" wx:for="{{postsList}}">
+      <view class="list-item has-img" index="{{index}}" id="{{item.id}}" bindtap='redirectDetail'>
+        <view class="content-title">
+          <text>{{item.title.rendered}}</text>
+        </view>
+        <view class="content-data">
+          <image></image>
+          <text></text>
+          <image></image>
+          <text></text>
+          <image></image>
+          <text></text>
+          <image></image>
+          <text></text>
+        </view>
+        <image></image>
+      </view>
+    </block>
+  </view>
+</template>
