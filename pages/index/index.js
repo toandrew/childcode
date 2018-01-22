@@ -99,6 +99,42 @@ Page({
 
   // 获取文章列表数据
   fetchPostsData: function(data) {
+    if (!data) {
+      data = {};
+    }
+
+    if (!data.page) {
+      data.page = 1;
+    }
+
+    if (!data.categories) {
+      data.categories = 0;
+    }
+
+    if (!data.search) {
+      data.search = '';
+    }
+
+    if (data.page == 1) {
+      this.setData({
+        postsList: []
+      });
+    }
+
+    wx.showLoading({
+      title: '正在加载',
+      mask: true
+    });
+
+    var request = wxRequest.getRequest(Api.getPosts(data));
+    request.then(response => {
+
+    }).catch(response => {
+
+    }).finally(response => {
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
+    });
   },
 
   // 加载更多
