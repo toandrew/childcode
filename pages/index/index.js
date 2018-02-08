@@ -2,6 +2,8 @@
 // 获取应用实例
 var Api = require('../../utils/api.js');
 
+var wxRequest = require('../../utils/wxRequest.js');
+
 const app = getApp()
 
 Page({
