@@ -11,6 +11,8 @@ import config from '../../utils/config.js'
 
 var pageCount = config.getPageCount;
 
+var util = require('../../utils/util.js');
+
 const app = getApp()
 
 Page({
