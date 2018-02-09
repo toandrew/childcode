@@ -1,5 +1,5 @@
 var DOMAIN = 'www.watch-life.net';
-
+var PAGECOUNT = 10;
 
 var INDEX_NAV = [
   {id: '1', name: '微店', image: 'shop.png', redirectlink: 'pages/shelf/shelf', redirecttype: 'app', appid: ''},
@@ -10,4 +10,5 @@ var INDEX_NAV = [
 export default {
   getIndexNav: INDEX_NAV,
   getDomain: DOMAIN,
+  getPageCount: PAGECOUNT,
 }
