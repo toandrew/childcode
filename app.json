@@ -1,10 +1,10 @@
 {
   "pages":[
-    "pages/start/index",
     "pages/index/index",
     "pages/course/index",
     "pages/my/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/start/index"
   ],
   "window":{
     "backgroundTextStyle":"light",

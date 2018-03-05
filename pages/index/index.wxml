@@ -1,16 +1,17 @@
 <!--index.wxml-->
 
 <import src="../../templates/common-list.wxml"/>
+<import src="../../templates/copyright.wxml"/>
 
 <!--轮播图-->
 <view class="index-header" style="display:{{displaySwiper}}">
   <swiper class="index-swiper" indicator-dots='true' interval='10000' autoplay='true' indicator-color='rgba(255, 255, 255, .2)' indicator-active-color='rgba(255, 255, 255, .7)'>
-    <block>
-      <swiper-item>
-        <image></image>
-        <view></view>
-        <view>
-          <text></text>
+    <block wx:key="id" wx:for="{{postsShowSwiperList}}">
+      <swiper-item id="{{item.id}}" index="{{index}}" data-redirecttype="{{item.type}}" bindtap="redirectToAppDetail">_
+        <image mode="aspectFill" src="{{item.post_medium_image_300}}" style="width:100%"></image>
+        <view class="swiper-mask"></view>
+        <view class="swipter-desc">
+          <text>{{item.post_title}}</text>
         </view>
       </swiper-item>
     </block>
@@ -18,22 +19,58 @@
 </view>
 
 <!--网络错误提示-->
-<view>
+<view class="showerror" style="display:{{showerror}}">
+  <image src="../../images/cry80.png" style="height:100rpx;width:100rpx;"/>
+  <view class="errortext">
+    暂时无法访问网络,下拉重试...
+  </view>
 </view>
 
 <!--主页显示内容-->
-<view>
-  <view>
+<view style="display:{{showallDisplay}}">
+  <view style="display:{{floatDisplay}}">
     <!--搜索-->
-    <form>
+    <form catchsubmit="formSubmit" catchreset="formReset" id="search-form">
+      <view class="search-pannel">
+        <input value="" id="search-input" name="input" confirm-type="search" class="search-input" placeholder="搜索你感兴趣的内容..." bindconfirm="formSubmit"/>
+        <button class="search-button" form-type="submit" size="mini" plain="true">
+          <icon type="search" color="#959595" size="12"/>
+        </button>
+      </view>
     </form>
 
     <!--图标导航-->
-    <view>
+    <view class="top-nav">
+      <block wx:for="{{topNav}}" wx:key="id">
+        <view class="top-item" catchtap="onNavRedirect" data-redirectlink="{{item.redirectlink}}" data-redirecttype="{{item.redirecttype}}" data-appid="{{item.appid}}" id="{{item.id}}">
+          <view>
+            <image src="{{item.image}}"></image>
+          </view>
+          <view>
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+      </block>
     </view>
   </view>
 
   <!--图文列表-->
-  <view>
+  <view class="container">
+    <view class="index-container">
+      <template is="tempCommonList" data="{{postsList}}" />
+
+      <view class="loadingmore" style="display:{{floatDisplay}}">
+        <view hidden="{{isLastPage}}">
+          <button class="more-button" formType="submit" size="mini" bindtap="loadMore">加载更多...</button>
+          <view class="no-more" hidden="{{!isLastPage}}">
+            ---无更多文章---
+          </view>
+        </view>
+      </view>
+
+      <view class="copyright" style="display:{{floatDisplay}}">
+        <template is="tempCopyright"/>
+      </view>
+    </view>
   </view>
 </view>

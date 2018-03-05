@@ -37,6 +37,9 @@ Page({
   onLoad: function (options) {
     this.fetchTopFivePosts();
 
+    this.setData({
+      topNav: config.getIndexNav
+    });
   },
 
   onShow: function (options) {
@@ -44,14 +47,54 @@ Page({
 
   // 分享
   onShareAppMessage: function () {
+    return {
+      title: '测试用。。。',
+      path: 'pages/index/index',
+      success: function(res) {
+      },
+      fail: function(res) {
+
+      }
+    }
   },
 
   // 下拉刷新
   onPullDownRefresh: function () {
+    this.setData({
+      showerror: 'none',
+      showallDisplay: 'none',
+      displaySwiper: 'none',
+      floatDisplay: 'none',
+      isLastPage: false,
+      page: 0,
+      postsShowSwiperList: []
+    });
+
+    this.fetchTopFivePosts();
   },
 
   // 搜索
   formSubmit: function(e) {
+    var url = '../list/list';
+    var key = '';
+    if (e.currentTarget.id == 'search-input') {
+      key = e.detail.value;
+    } else {
+      key = e.detail.value.input;
+    }
+
+    if (key !== '') {
+      url = url + '?search=' + key;
+      wx.navigateTo({
+        url: url,
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请输入要搜索的内容',
+        showCancel: false
+      });
+    }
   },
 
   // 到底部
@@ -210,22 +253,72 @@ Page({
 
   // 加载更多
   loadMore: function(e) {
+    var self = this;
 
+    if (!self.data.isLastPage) {
+      self.setData({
+        page: self.data.page + 1
+      });
+
+      this.fetchPostsData(self.data);
+    } else {
+      wx.showToast({
+        title: '没有更多内容',
+        mask: false,
+        duration: 1000
+      })
+    }
   },
 
   // 跳转至查看详情页
   redirectToDetail: function(e) {
-
+    var id = e.currentTarget.id;
+    var url = '../detail/detail?id=' + id;
+    wx.navigateTo({
+      url: url,
+    })
   },
 
   // 首页图标跳转
   onNavRedirect: function(e) {
+    var url = e.currentTarget.dataset.redirectlink;
+    var redirectType = e.currentTarget.dataset.redirecttype;
+    var appid = e.currentTarget.dataset.appid;
 
+    if (redirectType == 'page') {
+      wx.navigateTo({
+        url: url,
+      })
+    } else {
+      wx.navigateToMiniProgram({
+        appId: appid,
+        envVersion: 'release',
+        path: url,
+        success: function(res) {
+          console.log("onNavRedirect success!");
+        },
+        fail: function(res) {
+          console.log("onNavRedirect fail!");
+        }
+      })
+    }
   },
 
   // 跳转至app详情
   redirectToAppDetail: function(e) {
+    var id = e.currentTarget.id;
+    var redirectType = e.currentTarget.dataset.redirecttype;
+    var url = '';
 
+    if (redirectType == 'detailpage') {
+      url = '../detail/detail?id=' + id;
+    } else if (redirectType == 'apppage') {
+      url = '../applist/applist';
+    }
+
+    wx.navigateTo({
+      url: url,
+    })
   },
 
   // 返回首页

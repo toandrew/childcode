@@ -1,0 +1,5 @@
+<template name="tempCopyright">
+  <view>
+    © 2018 www.crossker.com
+  </view>
+</template>
