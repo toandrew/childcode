@@ -27,6 +27,13 @@ module.exports = {
     }
 
     return url;
-  }
+  },
 
+  getWeiXinComment: function(openid) {
+    return HOST_URI_WATCH_LIFE_JSON + 'comment/get?openid=' + openid;
+  },
+
+  getMyLike: function(openid) {
+    return HOST_URI_WATCH_LIFE_JSON + 'post/mylike?openid=' + openid;
+  }
 };

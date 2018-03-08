@@ -19,3 +19,24 @@
 .usermotto {
   margin-top: 200px;
 }
+
+.top-bar {
+  height: 100rpx;
+  width: 100%;
+  background: #fff;
+  top: 0;
+  z-index: 1;
+}
+.top-bar-item {
+  display: inline-block;
+  background: #fff;
+  width: 20%;
+  color: #9babba;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 30rpx;
+}
+.top-bar-item-selected {
+  border-bottom: 1px solid #495056;
+  color: #495056;
+}

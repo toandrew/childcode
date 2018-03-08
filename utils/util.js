@@ -42,8 +42,18 @@ function cutstr(str, len, flag) {
     return str;
   }
 }
+// 是否为空对象
+function isEmptyObject(e) {
+  var t;
+  for (t in e) {
+    return false;
+  }
+  return true;
+}
+
 
 module.exports = {
   formatTime: formatTime,
   cutstr: cutstr,
+  isEmptyObject: isEmptyObject,
 }
