@@ -288,9 +288,72 @@ Page({
           console.log("第一次授权");
         } else {
           console.log("不是第一次授权", authSetting);
+          if (authSetting['scope.userInfo'] == false) {
+            wx.showModal({
+              title: '用户未授权',
+              content: '如需正常使用评论、点赞、赞赏等功能需授权获取用户信息。是否在授权管理中选中“用户信息”?',
+              showCancel: true,
+              cancelColor: '#296fd0',
+              confirmColor: '#296fd0',
+              confirmText: '设置权限',
+              success: function(res) {
+                if (res.confirm) {
+                  console.log('用户点击确定');
+
+                  wx.openSetting({
+                    success: function(res) {
+                      console.log('打开设置', res.authSetting);
+                      var scopeUserInfo = res.authSetting['scope.userInfo'];
+                      if (scopeUserInfo) {
+                        self.getUserInfo();
+                      }
+                    }
+                  })
+                }
+              }
+            })
+          }
         }
       }
     })
+  },
+
+  getUserInfo: function() {
+    var self = this;
+    var wxLogin = wxApi.wxLogin();
+    var jscode = '';
+
+    wxLogin.then(response => {
+      jscode = response.code;
+      var wxGetUserInfo = wxApi.wxGetUserInfo();
+      return wxGetUserInfo();
+    }).then(response => {
+      app.globalData.userInfo = response.userInfo;
+      this.setData({
+        userInfo: response.userInfo
+      });
+
+      var url = Api.getOpenidUrl();
+      var data = {
+        js_code: jscode,
+        encryptedData: response.encryptedData,
+        iv: response.iv,
+        avataUrl: response.userInfo.avataUrl
+      }
+      var postOpenidRequest = wxRequest.postRequest(url, data);
+      postOpenidRequest.then(response => {
+        if (response.data.status == '200') {
+          console.log('openid 获取成功');
+          app.globalData.openid = response.data.openid;
+        } else {
+          console.log(response.data.message);
+        }
+      })
+    }).catch(error => {
+      console.log('error: ' + error.errMsg);
+
+      this.userAuthorization();
+    });
   }
   
 })
